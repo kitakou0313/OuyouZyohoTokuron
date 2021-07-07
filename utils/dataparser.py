@@ -36,8 +36,7 @@ def convertRawDataToMeshFeature(rawData:List[List[int]]) -> List[int]:
         for x in range(0, X, sampleSize):
             tmpSum = 0
             for dy in range(0, sampleSize):
-                for dx in range(0, sampleSize):
-                    tmpSum += rawData[y+dy][x+dx]
+                tmpSum += sum(rawData[y+dy][x:x+sampleSize])
             meshFeature.append(tmpSum /(sampleSize**2))
 
     return meshFeature
