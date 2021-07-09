@@ -1,15 +1,48 @@
 from typing import List
 import unittest
 
+CHAR_IND = {
+    0:"あ",
+    1:"い",
+    2:"う",
+    3:"え",
+    4:"お",
+    5:"か",
+    6:"き",
+    7:"く",
+    8:"け",
+    9:"こ",
+    10:"さ",
+    11:"し",
+    12:"す",
+    13:"せ",
+    14:"そ",
+    15:"た",
+    16:"ち",
+    17:"つ",
+    18:"て",
+    19:"と"
+}
+
+class AnsLabel():
+    """
+    文字種、データのインデックス、教師用onehotベクトルなどを管理
+    """
+    def __init__(self, charInd:int) -> None:
+        self.charInd:int = charInd
+        self.charType:str = CHAR_IND[charInd]
+        self.ansVec = [1 if ind == charInd else 0 for ind in range(0, len(CHAR_IND))]
+
 class CharData():
     """
     入力用のデータ型
     """
-    def __init__(self, data:List[List[int]]) -> None:
+    def __init__(self, data:List[List[int]], charInd:int) -> None:
         self.data:List[List[int]] = data
         self.meshFeature:List[int] = convertRawDataToMeshFeature(data)
+        self.ansLabel:AnsLabel = AnsLabel(charInd)
 
-def parseInputData(path:str) -> List[CharData]:
+def parseInputData(path:str,charInd:int) -> List[CharData]:
     """
     パスのファイルのデータ読み込み
     """
@@ -22,7 +55,7 @@ def parseInputData(path:str) -> List[CharData]:
     parsedDatas:List[CharData] = []
 
     for dataInd in range(0, len(rawData), 64):
-        parsedDatas.append(CharData(rawData[dataInd:dataInd+64]))
+        parsedDatas.append(CharData(rawData[dataInd:dataInd+64], charInd))
 
     return parsedDatas
 
