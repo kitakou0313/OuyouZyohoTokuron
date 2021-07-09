@@ -1,4 +1,5 @@
 from utils import dataparser
+from network import neuralNet
 from typing import List
 
 DATAPATH = "data/"
@@ -26,5 +27,7 @@ if __name__ == "__main__":
     for dataNum in range(0, 20):
         path = DATAPATH + "hira1_" + str(dataNum).zfill(2) + "T.dat"
         writer2TestDatas += dataparser.parseInputData(path)
+
+    model = neuralNet.NeuralNet()
 
     pass
