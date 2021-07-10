@@ -77,7 +77,7 @@ class NeuralNet(object):
                 tmp = 0
                 for k in range(K):
                     tmp += (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*self.Wkj[k][j] 
-                dWji[j][i] = self.params.ETA * (1 - yj1[j])*yi[i] * tmp
+                dWji[j][i] = self.params.ETA *yj1[j]*(1 - yj1[j])*yi[i] * tmp
 
         #出力層更新
         self.Wkj = self.Wkj + dWkj + self.params.ALPHA*self.dWkj_t_1
