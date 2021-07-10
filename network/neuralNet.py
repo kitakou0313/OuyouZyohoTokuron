@@ -127,7 +127,7 @@ def validateModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
     for dataInd in len(dataSet):
         charData = dataSet[dataInd]
         res = dataSet.forward(charData.meshFeature)
-        resMoziType = np.arg(res)
+        resMoziType = np.argmax(res)
 
         if dataInd % 20 == 0:
             print("ベクトル")
