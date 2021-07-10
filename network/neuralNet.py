@@ -39,8 +39,8 @@ class NeuralNet(object):
         self.yj1:np.ndarray = np.array([])
 
         #学習安定用の前回学習時の更新幅
-        self.dWji_t_1:np.ndarray = np.array([])
-        self.dWkj_t_1:np.ndarray = np.array([])
+        self.dWji_t_1:np.ndarray = np.zeros(self.Wji.shape)
+        self.dWkj_t_1:np.ndarray = np.zeros(self.Wkj.shape)
 
     def train(self,charData:dataparser.CharData) -> None:
         """
@@ -52,13 +52,14 @@ class NeuralNet(object):
         yk_hat = charData.ansLabel.ansVec
 
         K = OUTPUT_LAYER_WIDTH
-        J = MIDDLE_LAYER_WIDTH + 1
+        J1 = MIDDLE_LAYER_WIDTH + 1
+        J = MIDDLE_LAYER_WIDTH
         I = INPUT_LAYER_WIDTH + 1
 
         #出力層の更新幅計算
         dWkj:np.ndarray = np.zeros(self.Wkj.shape)
         for k in range(K):
-            for j in range(J):
+            for j in range(J1):
                 dWkj[k][j] = ETA * (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*yj1[j]
 
         #中間層の更新幅計算
