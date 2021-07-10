@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.random.mtrand import rand
 from utils import dataparser
 
 def logistic(x):
@@ -8,7 +9,7 @@ def logistic(x):
 ETA = 0.01
 #学習率
 
-ALPHA = 1.0
+ALPHA = 0.01
 #安定化係数
 
 INPUT_LAYER_WIDTH = 64
@@ -33,12 +34,47 @@ class NeuralNet(object):
         self.Wji:np.ndarray = np.random.randn(MIDDLE_LAYER_WIDTH,inputLayerWidthWith1)
         self.Wkj:np.ndarray = np.random.randn(OUTPUT_LAYER_WIDTH,middleLayerWidth1With1)
 
+        #学習時の重み更新用の中間層の出力
+        self.yj1:np.ndarray = np.array([])
+
+        #学習安定用の前回学習時の更新幅
+        self.dWji_t_1:np.ndarray = np.array([])
+        self.dWkj_t_1:np.ndarray = np.array([])
+
     def train(self,charData:dataparser.CharData) -> None:
         """
         学習用関数
         """
-        resVec = self.forward(charData)
-        pass
+        yk = self.forward(charData)
+        yj1 = self.yj1
+        yi = np.insert(charData.meshFeature, len(charData.meshFeature), 1)
+        yk_hat = charData.ansLabel.ansVec
+
+        K = OUTPUT_LAYER_WIDTH
+        J = MIDDLE_LAYER_WIDTH + 1
+        I = INPUT_LAYER_WIDTH + 1
+
+        #出力層の更新幅計算
+        dWkj:np.ndarray = np.zeros(self.Wkj.shape)
+        for k in range(K):
+            for j in range(J):
+                dWkj[k][j] = ETA * (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*yj1[j]
+
+        #中間層の更新幅計算
+        dWji:np.ndarray = np.zeros(self.Wji.shape)
+        for j in range(J):
+            for i in range(I):
+                tmp = 0
+                for k in range(K):
+                    tmp += (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*self.Wkj[k][j] 
+                dWji[j][i] = ETA * (1 - yj1[j])*yi[i] * tmp
+
+        #出力層更新
+        self.Wkj = self.Wkj + dWkj + ALPHA*self.dWkj_t_1
+        self.dWkj_t_1 = dWkj
+        #中間層更新
+        self.Wji = self.Wji + dWji + ALPHA*self.dWji_t_1
+        self.dWji_t_1 = dWji
 
     def forward(self, charData:dataparser.CharData) -> np.ndarray:
         """
@@ -52,14 +88,8 @@ class NeuralNet(object):
         yj = logistic(u)
 
         #出力層
-        yj1 = np.insert(yj, len(yj), 1)
-        u = self.Wkj @ yj1
+        self.yj1 = np.insert(yj, len(yj), 1)
+        u = self.Wkj @ self.yj1
         yk = logistic(u)
 
         return yk
-        
-    def backForward(self):
-        """
-        重みの更新関数
-        """
-        pass
