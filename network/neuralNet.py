@@ -48,12 +48,12 @@ class NeuralNet(object):
 
         #中間層
         inputVectorWith1 = np.insert(inputVector, len(inputVector), 1)
-        a = self.Wji @ inputVectorWith1
-        b = logistic(a)
+        u = self.Wji @ inputVectorWith1
+        yj = logistic(u)
 
         #出力層
-        b1 = np.insert(b, len(b), 1)
-        u = self.Wkj @ b1
+        yj1 = np.insert(yj, len(yj), 1)
+        u = self.Wkj @ yj1
         yk = logistic(u)
 
         return yk
