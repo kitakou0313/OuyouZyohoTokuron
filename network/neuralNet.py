@@ -121,3 +121,23 @@ def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
         print("平均二乗誤差:", l2ErrRate, "\n")
         if l2ErrRate < TRAIN_LIMIT_L2NORM:
             return
+
+def validateModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
+    correctNum = 0 
+    for dataInd in len(dataSet):
+        charData = dataSet[dataInd]
+        res = dataSet.forward(charData.meshFeature)
+        resMoziType = np.arg(res)
+
+        if dataInd % 20 == 0:
+            print("ベクトル")
+            print(res)
+            if resMoziType == charData.ansLabel.charInd:
+                print("正解！")
+            else:
+                print("不正解")
+
+        if resMoziType == charData.ansLabel.charInd:
+            correctNum += 1
+    
+    print("正答率:", int( (correctNum/len(dataSet))*100 ))

@@ -1,11 +1,12 @@
 from utils import dataparser
 from network import neuralNet
 from typing import List
+import numpy as np
 
 DATAPATH = "data/"
 if __name__ == "__main__":
     print("データの読み込み")
-    
+
     print("筆者0:train")
     writer0TrainDatas:List[dataparser.CharData] = []
     for dataNum in range(0, 20):
@@ -29,3 +30,7 @@ if __name__ == "__main__":
     print("1.筆記者0の学習用データを用いて、ニューラルネットの学習を行なえ。")
     modelTrainedWriter0 = neuralNet.NeuralNet()
     neuralNet.trainModel(modelTrainedWriter0, writer0TrainDatas[::10])
+
+    print("--------------------")
+    print("2.1で学習したニューラルネットに筆記者0の学習用データを入力して識別を行なえ。")
+    neuralNet.validateModel(modelTrainedWriter0, writer0TrainDatas)
