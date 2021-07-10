@@ -31,15 +31,17 @@ if __name__ == "__main__":
     print("--------------------")
     print("1.筆記者0の学習用データを用いて、ニューラルネットの学習を行なえ。")
     nnParams = neuralNet.NNParams(
-        ETA=0.2,
-        ALPHA=0.7,
+        ETA=0.01,
+        ALPHA=0.1,
         INPUT_LAYER_WIDTH=64,
         MIDDLE_LAYER_WIDTH=150,
         OUTPUT_LAYER_WIDTH=20
     )
+
+    np.random.seed(seed=20210711)
     modelTrainedWriter0 = neuralNet.NeuralNet(nnParams)
 
-    TRAIN_LIMIT_L2NORM_DIFF = 0.001
+    TRAIN_LIMIT_L2NORM_DIFF = 0.0001
     neuralNet.trainModel(modelTrainedWriter0, writer0TrainDatas[::50], TRAIN_LIMIT_L2NORM_DIFF)
 
     print("--------------------")

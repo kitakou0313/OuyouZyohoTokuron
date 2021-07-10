@@ -1,6 +1,7 @@
 from utils import dataparser
 from network import neuralNet
 from typing import List
+import numpy as np
 
 DATAPATH = "data/"
 if __name__ == "__main__":
@@ -41,6 +42,8 @@ if __name__ == "__main__":
         MIDDLE_LAYER_WIDTH=150,
         OUTPUT_LAYER_WIDTH=20
     )
+
+    np.random.seed(seed=20210711)
     modelTrainedWriter0AndWriter1 = neuralNet.NeuralNet(nnParams)
 
     TRAIN_LIMIT_L2NORM_DIFF = 0.001
