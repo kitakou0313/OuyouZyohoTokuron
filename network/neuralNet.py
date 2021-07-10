@@ -111,7 +111,7 @@ def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L
 
     while True:
         epoch += 1
-        print("Epock数:",epoch)
+        print("Epoch数:",epoch)
 
         #学習
         for p in tqdm(range(P)):
