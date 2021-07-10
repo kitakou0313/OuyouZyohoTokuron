@@ -2,6 +2,7 @@ from typing import List
 import numpy as np
 from numpy.random.mtrand import rand
 from utils import dataparser
+from tqdm import tqdm
 
 def logistic(x):
     y = 1 / (1 + np.exp(-x))
@@ -106,7 +107,7 @@ def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
         print("Epock数:",epoch)
 
         #学習
-        for p in range(P):
+        for p in tqdm(range(P)):
             model.train(dataSet[p])
         
         #学習結果と誤差の検証
@@ -117,6 +118,6 @@ def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
             K = len(yk)
             l2ErrRate += (((np.linalg.norm(yk_hat - yk))**2)/K)/P
 
-        print("平均二乗誤差:", l2ErrRate)
+        print("平均二乗誤差:", l2ErrRate, "\n")
         if l2ErrRate < TRAIN_LIMIT_L2NORM:
             return
