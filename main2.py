@@ -36,7 +36,7 @@ if __name__ == "__main__":
         OUTPUT_LAYER_WIDTH=20
     )
 
-    np.random.seed(seed=20210711)
+    np.random.seed(seed=20210713)
     modelTrainedWriter1 = neuralNet.NeuralNet(nnParams)
 
     TRAIN_LIMIT_L2NORM_DIFF = 0.0001
