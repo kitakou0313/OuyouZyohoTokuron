@@ -29,8 +29,28 @@ if __name__ == "__main__":
         path = DATAPATH + "hira1_" + str(dataNum).zfill(2) + "T.dat"
         writer1TestDatas += dataparser.parseInputData(path,dataNum)
 
+    trainData = writer0TrainDatas + writer1TrainDatas
+    testData = writer0TestDatas + writer1TestDatas
     print("データ読み込み完了")
     print("--------------------")
     print("9.筆記者0と筆記者1の学習用データを用いて、ニューラルネットの学習を行なえ。")
-    modelTrainedWriter0 = neuralNet.NeuralNet()
-    neuralNet.trainModel(modelTrainedWriter0, writer0TrainDatas[::10])
+    nnParams = neuralNet.NNParams(
+        ETA=0.2,
+        ALPHA=0.7,
+        INPUT_LAYER_WIDTH=64,
+        MIDDLE_LAYER_WIDTH=150,
+        OUTPUT_LAYER_WIDTH=20
+    )
+    modelTrainedWriter0AndWriter1 = neuralNet.NeuralNet(nnParams)
+
+    TRAIN_LIMIT_L2NORM = 0.025
+    neuralNet.trainModel(modelTrainedWriter0AndWriter1, trainData, TRAIN_LIMIT_L2NORM)
+
+    print("--------------------")
+    print("10.9で学習したニューラルネットに筆記者0と筆記者1の学習用データを入力して識別を行なえ。")
+    neuralNet.validateModel(modelTrainedWriter0AndWriter1, trainData)
+
+    print("--------------------")
+    print("11.9で学習したニューラルネットに筆記者0と筆記者1のテスト用データを入力して識別を行なえ。")
+    neuralNet.validateModel(modelTrainedWriter0AndWriter1, testData)
+    print("\n")
