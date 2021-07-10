@@ -11,4 +11,16 @@ class NeuralNet(object):
         self.layer = []
 
     def train(self) -> None:
+        """
+        学習用関数
+        """
         pass
+    def forward(self):
+        """
+        識別用関数
+        """
+        pass
+    def backForward(self):
+        """
+        重みの更新関数
+        """
