@@ -3,6 +3,8 @@ from network import neuralNet
 from typing import List
 import numpy as np
 
+INPUT_LAYER_WIDTH = 64
+
 DATAPATH = "data/"
 if __name__ == "__main__":
     print("データの読み込み")
@@ -28,8 +30,17 @@ if __name__ == "__main__":
     print("データ読み込み完了")
     print("--------------------")
     print("1.筆記者0の学習用データを用いて、ニューラルネットの学習を行なえ。")
-    modelTrainedWriter0 = neuralNet.NeuralNet()
-    neuralNet.trainModel(modelTrainedWriter0, writer0TrainDatas[::10])
+    nnParams = neuralNet.NNParams(
+        ETA=0.2,
+        ALPHA=0.9,
+        INPUT_LAYER_WIDTH=64,
+        MIDDLE_LAYER_WIDTH=100,
+        OUTPUT_LAYER_WIDTH=20
+    )
+    modelTrainedWriter0 = neuralNet.NeuralNet(nnParams)
+
+    TRAIN_LIMIT_L2NORM = 0.045
+    neuralNet.trainModel(modelTrainedWriter0, writer0TrainDatas[::10], TRAIN_LIMIT_L2NORM)
 
     print("--------------------")
     print("2.1で学習したニューラルネットに筆記者0の学習用データを入力して識別を行なえ。")

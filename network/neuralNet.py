@@ -8,17 +8,16 @@ def logistic(x):
     y = 1 / (1 + np.exp(-x))
     return y
 
-ETA = 0.2
-#学習率
-
-ALPHA = 0.9
-#安定化係数
-
-INPUT_LAYER_WIDTH = 64
-MIDDLE_LAYER_WIDTH = 50
-OUTPUT_LAYER_WIDTH = 20 
-
-#中間層の数(1の出力は含まない)
+class NNParams():
+    """
+    ネットワークのパラメータ管理用クラス
+    """
+    def __init__(self, ETA:int, ALPHA:int,INPUT_LAYER_WIDTH:int,MIDDLE_LAYER_WIDTH:int, OUTPUT_LAYER_WIDTH:int) -> None:
+        self.ETA = ETA
+        self.ALPHA = ALPHA
+        self.INPUT_LAYER_WIDTH = INPUT_LAYER_WIDTH
+        self.MIDDLE_LAYER_WIDTH = MIDDLE_LAYER_WIDTH
+        self.OUTPUT_LAYER_WIDTH = OUTPUT_LAYER_WIDTH
 
 class NeuralNet(object):
     """
@@ -27,14 +26,16 @@ class NeuralNet(object):
     中間層:定数で指定
     出力:20次元ベクトル（文字の種類と同数）
     """
-    def __init__(self) -> None:
+    def __init__(self, params:NNParams) -> None:
+        self.params = params
+
         #定数1を追加する用の次元を用意する
-        inputLayerWidthWith1 = INPUT_LAYER_WIDTH + 1
-        middleLayerWidth1With1 = MIDDLE_LAYER_WIDTH + 1
+        inputLayerWidthWith1 = self.params.INPUT_LAYER_WIDTH + 1
+        middleLayerWidth1With1 = self.params.MIDDLE_LAYER_WIDTH + 1
 
         #標準偏差（平均0、標準偏差1）で初期化
-        self.Wji:np.ndarray = np.random.randn(MIDDLE_LAYER_WIDTH,inputLayerWidthWith1)
-        self.Wkj:np.ndarray = np.random.randn(OUTPUT_LAYER_WIDTH,middleLayerWidth1With1)
+        self.Wji:np.ndarray = np.random.randn(self.params.MIDDLE_LAYER_WIDTH,inputLayerWidthWith1)
+        self.Wkj:np.ndarray = np.random.randn(self.params.OUTPUT_LAYER_WIDTH,middleLayerWidth1With1)
 
         #学習時の重み更新用の中間層の出力
         self.yj1:np.ndarray = np.array([])
@@ -52,16 +53,16 @@ class NeuralNet(object):
         yi = np.insert(charData.meshFeature, len(charData.meshFeature), 1)
         yk_hat = charData.ansLabel.ansVec
 
-        K = OUTPUT_LAYER_WIDTH
-        J1 = MIDDLE_LAYER_WIDTH + 1
-        J = MIDDLE_LAYER_WIDTH
-        I = INPUT_LAYER_WIDTH + 1
+        K = self.params.OUTPUT_LAYER_WIDTH
+        J1 = self.params.MIDDLE_LAYER_WIDTH + 1
+        J = self.params.MIDDLE_LAYER_WIDTH
+        I = self.params.INPUT_LAYER_WIDTH + 1
 
         #出力層の更新幅計算
         dWkj:np.ndarray = np.zeros(self.Wkj.shape)
         for k in range(K):
             for j in range(J1):
-                dWkj[k][j] = ETA * (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*yj1[j]
+                dWkj[k][j] = self.params.ETA * (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*yj1[j]
 
         #中間層の更新幅計算
         dWji:np.ndarray = np.zeros(self.Wji.shape)
@@ -70,13 +71,13 @@ class NeuralNet(object):
                 tmp = 0
                 for k in range(K):
                     tmp += (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*self.Wkj[k][j] 
-                dWji[j][i] = ETA * (1 - yj1[j])*yi[i] * tmp
+                dWji[j][i] = self.params.ETA * (1 - yj1[j])*yi[i] * tmp
 
         #出力層更新
-        self.Wkj = self.Wkj + dWkj + ALPHA*self.dWkj_t_1
+        self.Wkj = self.Wkj + dWkj + self.params.ALPHA*self.dWkj_t_1
         self.dWkj_t_1 = dWkj
         #中間層更新
-        self.Wji = self.Wji + dWji + ALPHA*self.dWji_t_1
+        self.Wji = self.Wji + dWji + self.params.ALPHA*self.dWji_t_1
         self.dWji_t_1 = dWji
 
     def forward(self, charData:dataparser.CharData) -> np.ndarray:
@@ -97,8 +98,7 @@ class NeuralNet(object):
 
         return yk
 
-TRAIN_LIMIT_L2NORM = 0.0001
-def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
+def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L2NORM:float):
     P = len(dataSet)
     epoch = 0
 
