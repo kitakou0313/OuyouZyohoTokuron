@@ -29,7 +29,7 @@ if __name__ == "__main__":
     print("--------------------")
     print("5.筆記者1の学習用データを用いて、ニューラルネットの学習を行なえ。")
     nnParams = neuralNet.NNParams(
-        ETA=0.01,
+        ETA=0.03,
         ALPHA=0.1,
         INPUT_LAYER_WIDTH=64,
         MIDDLE_LAYER_WIDTH=150,
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     modelTrainedWriter1 = neuralNet.NeuralNet(nnParams)
 
     TRAIN_LIMIT_L2NORM_DIFF = 0.0001
-    neuralNet.trainModel(modelTrainedWriter1, writer1TrainDatas, TRAIN_LIMIT_L2NORM_DIFF)
+    neuralNet.trainModel(modelTrainedWriter1, writer1TrainDatas[::100], TRAIN_LIMIT_L2NORM_DIFF)
     
     print("--------------------")
     print("6.5で学習したニューラルネットに筆記者1の学習用データを入力して識別を行なえ。")
