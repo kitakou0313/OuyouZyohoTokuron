@@ -39,8 +39,8 @@ if __name__ == "__main__":
     )
     modelTrainedWriter0 = neuralNet.NeuralNet(nnParams)
 
-    TRAIN_LIMIT_L2NORM = 0.025
-    neuralNet.trainModel(modelTrainedWriter0, writer0TrainDatas, TRAIN_LIMIT_L2NORM)
+    TRAIN_LIMIT_L2NORM_DIFF = 0.001
+    neuralNet.trainModel(modelTrainedWriter0, writer0TrainDatas[::50], TRAIN_LIMIT_L2NORM_DIFF)
 
     print("--------------------")
     print("2.1で学習したニューラルネットに筆記者0の学習用データを入力して識別を行なえ。")
