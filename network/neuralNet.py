@@ -130,6 +130,8 @@ def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L
         #誤差が事前に指定した幅から更新されなくなったら収束として停止
         if abs(preStepErrRate - l2ErrRate) < TRAIN_LIMIT_L2NORM_DIFF:
             return
+        
+        preStepErrRate = l2ErrRate
 
 def validateModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
     correctNum = 0 
