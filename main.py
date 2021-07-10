@@ -32,6 +32,15 @@ if __name__ == "__main__":
     print("データ読み込み完了")
     print("--------------------")
 
+    print("ネットワークの初期化")
     model = neuralNet.NeuralNet()
 
-    pass
+    print("--------------------")
+    print("学習開始")
+
+    print("筆者0のデータで学習")
+
+    for inputData in writer1TrainDatas:
+        model.train(inputData)
+
+    
