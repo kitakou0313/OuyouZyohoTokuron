@@ -1,3 +1,4 @@
+from typing import List
 import numpy as np
 from numpy.random.mtrand import rand
 from utils import dataparser
@@ -93,3 +94,23 @@ class NeuralNet(object):
         yk = logistic(u)
 
         return yk
+
+TRAIN_LIMIT_L2NORM = 0.0001
+def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
+    P = len(dataSet)
+    epoch = 0
+
+    while True:
+        epoch += 1
+        print("Epock数:",epoch)
+        #学習結果
+        l2ErrRate = 0
+        for p in range(P):
+            yk_hat = dataSet[p].ansLabel.ansVec
+            yk = model.forward(dataSet[p])
+            K = len(yk)
+            l2ErrRate += (((np.linalg.norm(yk_hat - yk))**2)/K)/P
+
+        print("平均二乗誤差:", l2ErrRate)
+        if l2ErrRate < TRAIN_LIMIT_L2NORM:
+            return
