@@ -124,9 +124,9 @@ def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L
 
 def validateModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
     correctNum = 0 
-    for dataInd in len(dataSet):
+    for dataInd in range(len(dataSet)):
         charData = dataSet[dataInd]
-        res = dataSet.forward(charData.meshFeature)
+        res = model.forward(charData)
         resMoziType = np.argmax(res)
 
         if dataInd % 20 == 0:
@@ -140,4 +140,4 @@ def validateModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
         if resMoziType == charData.ansLabel.charInd:
             correctNum += 1
     
-    print("正答率:", int( (correctNum/len(dataSet))*100 ))
+    print("正答率:", int( (correctNum/len(dataSet))*100 ), "%")
