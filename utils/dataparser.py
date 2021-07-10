@@ -32,7 +32,7 @@ class AnsLabel():
     def __init__(self, charInd:int) -> None:
         self.charInd:int = charInd
         self.charType:str = CHAR_IND[charInd]
-        self.ansVec = [1 if ind == charInd else 0 for ind in range(0, len(CHAR_IND))]
+        self.ansVec:np.ndarray = np.array([1 if ind == charInd else 0 for ind in range(0, len(CHAR_IND))])
 
 class CharData():
     """
