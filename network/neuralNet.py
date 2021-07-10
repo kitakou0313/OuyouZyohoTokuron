@@ -1,11 +1,15 @@
+import numpy as np
+
+def logistic(x):
+    y = 1 / (1 + np.exp(-x))
+    return y
+
 class NeuralNet(object):
     """
     NeuralNetworkクラス
-
-    入力:64次元ベクトル（メッシュ特徴の次元数）
-    中間層:適当
+    入力:64次元ベクトル（メッシュ特徴の次元数）+ 1次元(1で固定)
+    中間層:コンストラクタの引数で指定
     出力:20次元ベクトル（文字の種類と同数）
-
     """
     def __init__(self, numOfMiddleLayers:int) -> None:
         self.layer = []
@@ -24,3 +28,4 @@ class NeuralNet(object):
         """
         重みの更新関数
         """
+        pass
