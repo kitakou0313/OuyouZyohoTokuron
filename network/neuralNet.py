@@ -4,6 +4,13 @@ def logistic(x):
     y = 1 / (1 + np.exp(-x))
     return y
 
+ETA = 1.0
+#学習率
+ALPHA = 1.0
+#安定化係数
+MIDDLE_LAYER_WIDTH = 50
+#中間層の数
+
 class NeuralNet(object):
     """
     NeuralNetworkクラス
@@ -11,8 +18,9 @@ class NeuralNet(object):
     中間層:コンストラクタの引数で指定
     出力:20次元ベクトル（文字の種類と同数）
     """
-    def __init__(self, numOfMiddleLayers:int) -> None:
-        self.layer = []
+    def __init__(self) -> None:
+        self.Wji:np.ndarray = np.array([])
+        self.Wkj:np.ndarray = np.array([])
 
     def train(self) -> None:
         """

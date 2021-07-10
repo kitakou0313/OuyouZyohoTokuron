@@ -3,7 +3,6 @@ from network import neuralNet
 from typing import List
 
 DATAPATH = "data/"
-MIDDLE_LAYER_WIDTH = 50
 if __name__ == "__main__":
     print("データの読み込み")
     print("筆者1:train")
@@ -33,6 +32,6 @@ if __name__ == "__main__":
     print("データ読み込み完了")
     print("--------------------")
 
-    model = neuralNet.NeuralNet(MIDDLE_LAYER_WIDTH)
+    model = neuralNet.NeuralNet()
 
     pass
