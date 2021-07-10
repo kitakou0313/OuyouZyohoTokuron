@@ -36,7 +36,13 @@ class NeuralNet(object):
         #標準偏差（平均0、標準偏差1）で初期化
         self.Wji:np.ndarray = np.random.randn(self.params.MIDDLE_LAYER_WIDTH,inputLayerWidthWith1)
         self.Wkj:np.ndarray = np.random.randn(self.params.OUTPUT_LAYER_WIDTH,middleLayerWidth1With1)
-
+        
+        #0.5で初期化
+        """
+        self.Wji:np.ndarray = np.full((self.params.MIDDLE_LAYER_WIDTH,inputLayerWidthWith1), 0.5)
+        self.Wkj:np.ndarray = np.full((self.params.OUTPUT_LAYER_WIDTH,middleLayerWidth1With1), 0.5)
+        """
+        
         #学習時の重み更新用の中間層の出力
         self.yj1:np.ndarray = np.array([])
 
