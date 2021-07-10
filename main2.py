@@ -27,5 +27,28 @@ if __name__ == "__main__":
     print("データ読み込み完了")
     print("--------------------")
     print("5.筆記者1の学習用データを用いて、ニューラルネットの学習を行なえ。")
-    modelTrainedWriter0 = neuralNet.NeuralNet()
-    neuralNet.trainModel(modelTrainedWriter0, writer1TrainDatas[::10])
+    nnParams = neuralNet.NNParams(
+        ETA=0.2,
+        ALPHA=0.7,
+        INPUT_LAYER_WIDTH=64,
+        MIDDLE_LAYER_WIDTH=150,
+        OUTPUT_LAYER_WIDTH=20
+    )
+    modelTrainedWriter1 = neuralNet.NeuralNet(nnParams)
+
+    TRAIN_LIMIT_L2NORM = 0.025
+    neuralNet.trainModel(modelTrainedWriter1, writer1TrainDatas, TRAIN_LIMIT_L2NORM)
+    
+    print("--------------------")
+    print("6.5で学習したニューラルネットに筆記者1の学習用データを入力して識別を行なえ。")
+    neuralNet.validateModel(modelTrainedWriter1, writer1TrainDatas)
+
+    print("--------------------")
+    print("7.5で学習したニューラルネットに筆記者0のテスト用データを入力して識別を行なえ。")
+    neuralNet.validateModel(modelTrainedWriter1, writer0TestDatas)
+    print("\n")
+
+    print("--------------------")
+    print("8.5で学習したニューラルネットに筆記者1のテスト用データを入力して識別を行なえ。")
+    neuralNet.validateModel(modelTrainedWriter1, writer1TestDatas)
+    print("\n")
