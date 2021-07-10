@@ -1,5 +1,6 @@
 from typing import List
 import unittest
+import numpy as np
 
 CHAR_IND = {
     0:"あ",
@@ -39,7 +40,7 @@ class CharData():
     """
     def __init__(self, data:List[List[int]], charInd:int) -> None:
         self.data:List[List[int]] = data
-        self.meshFeature:List[int] = convertRawDataToMeshFeature(data)
+        self.meshFeature:np.ndarray = np.array(convertRawDataToMeshFeature(data))
         self.ansLabel:AnsLabel = AnsLabel(charInd)
 
 def parseInputData(path:str,charInd:int) -> List[CharData]:
