@@ -132,6 +132,9 @@ def validateModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
         if dataInd % 100 == 0:
             print("ベクトル")
             print(res)
+
+            print("正解:", charData.ansLabel.charType, "予測:", dataparser.CHAR_IND[resMoziType])
+
             if resMoziType == charData.ansLabel.charInd:
                 print("正解！")
             else:
