@@ -7,10 +7,10 @@ def logistic(x):
     y = 1 / (1 + np.exp(-x))
     return y
 
-ETA = 0.01
+ETA = 0.2
 #学習率
 
-ALPHA = 0.01
+ALPHA = 0.9
 #安定化係数
 
 INPUT_LAYER_WIDTH = 64
@@ -103,7 +103,12 @@ def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData]):
     while True:
         epoch += 1
         print("Epock数:",epoch)
-        #学習結果
+
+        #学習
+        for p in range(P):
+            model.train(dataSet[p])
+        
+        #学習結果と誤差の検証
         l2ErrRate = 0
         for p in range(P):
             yk_hat = dataSet[p].ansLabel.ansVec
