@@ -30,8 +30,8 @@ class NeuralNet(object):
         middleLayerWidth1With1 = MIDDLE_LAYER_WIDTH + 1
 
         #標準偏差（平均0、標準偏差1）で初期化
-        self.Wji:np.ndarray = np.random.randn(inputLayerWidthWith1,MIDDLE_LAYER_WIDTH)
-        self.Wkj:np.ndarray = np.random.randn(middleLayerWidth1With1, OUTPUT_LAYER_WIDTH)
+        self.Wji:np.ndarray = np.random.randn(MIDDLE_LAYER_WIDTH,inputLayerWidthWith1)
+        self.Wkj:np.ndarray = np.random.randn(OUTPUT_LAYER_WIDTH,middleLayerWidth1With1)
 
     def train(self,charData:dataparser.CharData) -> None:
         """
@@ -48,12 +48,12 @@ class NeuralNet(object):
 
         #中間層
         inputVectorWith1 = np.insert(inputVector, len(inputVector), 1)
-        a = inputVectorWith1 @ self.Wji 
+        a = self.Wji @ inputVectorWith1
         b = logistic(a)
 
         #出力層
         b1 = np.insert(b, len(b), 1)
-        u = b1 @ self.Wkj
+        u = self.Wkj @ b1
         yk = logistic(u)
 
         return yk
