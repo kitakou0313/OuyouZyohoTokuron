@@ -8,6 +8,13 @@ def logistic(x):
     y = 1 / (1 + np.exp(-x))
     return y
 
+def softmax(x):
+    x = x.T
+    x_max = x.max(axis=0)
+    x = x - x_max
+    w = np.exp(x)
+    return (w / w.sum(axis=0)).T
+
 class NNParams():
     """
     ネットワークのパラメータ管理用クラス
@@ -100,7 +107,7 @@ class NeuralNet(object):
         #出力層
         self.yj1 = np.insert(yj, len(yj), 1)
         u = self.Wkj @ self.yj1
-        yk = logistic(u)
+        yk = softmax(u)
 
         return yk
 
