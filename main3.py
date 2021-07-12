@@ -36,7 +36,7 @@ if __name__ == "__main__":
     print("--------------------")
     print("9.筆記者0と筆記者1の学習用データを用いて、ニューラルネットの学習を行なえ。")
     nnParams = neuralNet.NNParams(
-        ETA=0.01,
+        ETA=0.05,
         ALPHA=0.1,
         INPUT_LAYER_WIDTH=64,
         MIDDLE_LAYER_WIDTH=150,
