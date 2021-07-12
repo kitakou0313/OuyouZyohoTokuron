@@ -56,7 +56,7 @@ class NeuralNet(object):
         #学習安定用の前回学習時の更新幅
         self.dWji_t_1:np.ndarray = np.zeros(self.Wji.shape)
         self.dWkj_t_1:np.ndarray = np.zeros(self.Wkj.shape)
-
+    @profile
     def train(self,charData:dataparser.CharData) -> None:
         """
         学習用関数
@@ -74,17 +74,18 @@ class NeuralNet(object):
         #出力層の更新幅計算
         dWkj:np.ndarray = np.zeros(self.Wkj.shape)
         for k in range(K):
+            """
             for j in range(J1):
-                dWkj[k][j] = self.params.ETA * (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*yj1[j]
+            """
+            dWkj[k] = self.params.ETA * (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*yj1
+
 
         #中間層の更新幅計算
         dWji:np.ndarray = np.zeros(self.Wji.shape)
         for j in range(J):
-            for i in range(I):
-                tmp = 0
-                for k in range(K):
-                    tmp += (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*self.Wkj[k][j] 
-                dWji[j][i] = self.params.ETA *yj1[j]*(1 - yj1[j])*yi[i] * tmp
+            tmp = np.sum((yk_hat - yk)*yk*(1-yk)*self.Wkj[:,j])
+            dWji[j] = self.params.ETA *yj1[j]*(1 - yj1[j])*yi * tmp
+
 
         #出力層更新
         self.Wkj = self.Wkj + dWkj + self.params.ALPHA*self.dWkj_t_1
@@ -110,7 +111,7 @@ class NeuralNet(object):
         yk = softmax(u)
 
         return yk
-
+@profile
 def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L2NORM_DIFF:float):
     P = len(dataSet)
     epoch = 0
