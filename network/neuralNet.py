@@ -110,7 +110,7 @@ class NeuralNet(object):
 
         return yk
 
-def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L2NORM_DIFF:float):
+def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L2NORM:float):
     P = len(dataSet)
     epoch = 0
     preStepErrRate = 0
@@ -133,8 +133,8 @@ def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L
 
         print("平均二乗誤差:", l2ErrRate)
         print("改善された誤差:", preStepErrRate - l2ErrRate, "\n")
-        #誤差が事前に指定した幅から更新されなくなったら収束として停止
-        if abs(preStepErrRate - l2ErrRate) < TRAIN_LIMIT_L2NORM_DIFF:
+        #誤差が事前に指定したより小さくなれば停止
+        if l2ErrRate < TRAIN_LIMIT_L2NORM:
             return
         
         preStepErrRate = l2ErrRate
