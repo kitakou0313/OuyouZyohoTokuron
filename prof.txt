@@ -1,4 +1,4 @@
-Total time: 3.65925 s
+Total time: 1.80869 s
 File: /workspaces/OuyouZyohoTokuron/network/neuralNet.py
 Function: train at line 59
 
@@ -9,72 +9,71 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
     61                                                   """
     62                                                   学習用関数
     63                                                   """
-    64       120      69149.0    576.2      1.9          yk = self.forward(charData)
-    65       120        214.0      1.8      0.0          yj1 = self.yj1
-    66       120      10110.0     84.2      0.3          yi = np.insert(charData.meshFeature, len(charData.meshFeature), 1)
-    67       120        246.0      2.0      0.0          yk_hat = charData.ansLabel.ansVec
+    64       200     546174.0   2730.9     30.2          yk = self.forward(charData)
+    65       200        432.0      2.2      0.0          yj1 = self.yj1
+    66       200      20055.0    100.3      1.1          yi = np.insert(charData.meshFeature, len(charData.meshFeature), 1)
+    67       200        419.0      2.1      0.0          yk_hat = charData.ansLabel.ansVec
     68                                           
-    69       120        156.0      1.3      0.0          K = self.params.OUTPUT_LAYER_WIDTH
-    70       120        144.0      1.2      0.0          J1 = self.params.MIDDLE_LAYER_WIDTH + 1
-    71       120        139.0      1.2      0.0          J = self.params.MIDDLE_LAYER_WIDTH
-    72       120        132.0      1.1      0.0          I = self.params.INPUT_LAYER_WIDTH + 1
+    69       200        299.0      1.5      0.0          K = self.params.OUTPUT_LAYER_WIDTH
+    70       200        241.0      1.2      0.0          J1 = self.params.MIDDLE_LAYER_WIDTH + 1
+    71       200        255.0      1.3      0.0          J = self.params.MIDDLE_LAYER_WIDTH
+    72       200        229.0      1.1      0.0          I = self.params.INPUT_LAYER_WIDTH + 1
     73                                           
     74                                                   #出力層の更新幅計算
-    75       120        575.0      4.8      0.0          dWkj:np.ndarray = np.zeros(self.Wkj.shape)
-    76      2520       2578.0      1.0      0.1          for k in range(K):
-    77    364800     409370.0      1.1     11.2              for j in range(J1):
-    78    362400    2533190.0      7.0     69.2                  dWkj[k][j] = self.params.ETA * (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*yj1[j]
-    79                                           
-    80                                                   #中間層の更新幅計算
-    81       120       1292.0     10.8      0.0          dWji:np.ndarray = np.zeros(self.Wji.shape)
-    82     18120      20815.0      1.1      0.6          for j in range(J):
-    83                                                       """
-    84                                                       for i in range(I):
-    85                                                           dWji[j][i] = self.params.ETA *yj1[j]*(1 - yj1[j])*yi[i] * tmp
-    86                                                       """
-    87     18000     435818.0     24.2     11.9              tmp = np.sum((yk_hat - yk)*yk*(1-yk)*self.Wkj[:,j])
-    88     18000     168305.0      9.4      4.6              dWji[j] = self.params.ETA *yj1[j]*(1 - yj1[j])*yi * tmp
+    75       200       1021.0      5.1      0.1          dWkj:np.ndarray = np.zeros(self.Wkj.shape)
+    76      4200       5590.0      1.3      0.3          for k in range(K):
+    77                                                       """
+    78                                                       for j in range(J1):
+    79                                                       """
+    80      4000      43766.0     10.9      2.4              dWkj[k] = self.params.ETA * (yk_hat[k] - yk[k])*yk[k]*(1-yk[k])*yj1
+    81                                           
+    82                                           
+    83                                                   #中間層の更新幅計算
+    84       200       1352.0      6.8      0.1          dWji:np.ndarray = np.zeros(self.Wji.shape)
+    85     30200      43517.0      1.4      2.4          for j in range(J):
+    86     30000     824749.0     27.5     45.6              tmp = np.sum((yk_hat - yk)*yk*(1-yk)*self.Wkj[:,j])
+    87     30000     302974.0     10.1     16.8              dWji[j] = self.params.ETA *yj1[j]*(1 - yj1[j])*yi * tmp
+    88                                           
     89                                           
-    90                                           
-    91                                                   #出力層更新
-    92       120       2294.0     19.1      0.1          self.Wkj = self.Wkj + dWkj + self.params.ALPHA*self.dWkj_t_1
-    93       120        196.0      1.6      0.0          self.dWkj_t_1 = dWkj
-    94                                                   #中間層更新
-    95       120       4336.0     36.1      0.1          self.Wji = self.Wji + dWji + self.params.ALPHA*self.dWji_t_1
-    96       120        196.0      1.6      0.0          self.dWji_t_1 = dWji
+    90                                                   #出力層更新
+    91       200       4292.0     21.5      0.2          self.Wkj = self.Wkj + dWkj + self.params.ALPHA*self.dWkj_t_1
+    92       200        389.0      1.9      0.0          self.dWkj_t_1 = dWkj
+    93                                                   #中間層更新
+    94       200      12614.0     63.1      0.7          self.Wji = self.Wji + dWji + self.params.ALPHA*self.dWji_t_1
+    95       200        327.0      1.6      0.0          self.dWji_t_1 = dWji
 
-Total time: 4.50277 s
+Total time: 2.33893 s
 File: /workspaces/OuyouZyohoTokuron/network/neuralNet.py
-Function: trainModel at line 115
+Function: trainModel at line 114
 
 Line #      Hits         Time  Per Hit   % Time  Line Contents
 ==============================================================
-   115                                           @profile
-   116                                           def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L2NORM_DIFF:float):
-   117         1          2.0      2.0      0.0      P = len(dataSet)
-   118         1          1.0      1.0      0.0      epoch = 0
-   119         1          1.0      1.0      0.0      preStepErrRate = 0
-   120                                           
-   121                                               while True:
-   122         3          3.0      1.0      0.0          epoch += 1
-   123         3        146.0     48.7      0.0          print("Epoch数:",epoch)
-   124                                           
-   125                                                   #学習
-   126       123      52879.0    429.9      1.2          for p in tqdm(range(P)):
-   127       120    4394553.0  36621.3     97.6              model.train(dataSet[p])
-   128                                                   
-   129                                                   #学習結果と誤差の検証
-   130         3          6.0      2.0      0.0          l2ErrRate = 0
-   131       123        177.0      1.4      0.0          for p in range(P):
-   132       120        244.0      2.0      0.0              yk_hat = dataSet[p].ansLabel.ansVec
-   133       120      49304.0    410.9      1.1              yk = model.forward(dataSet[p])
-   134       120        249.0      2.1      0.0              K = len(yk)
-   135       120       3810.0     31.8      0.1              l2ErrRate += (((np.linalg.norm(yk_hat - yk))**2)/K)/P
-   136                                           
-   137         3        702.0    234.0      0.0          print("平均二乗誤差:", l2ErrRate)
-   138         3        669.0    223.0      0.0          print("改善された誤差:", preStepErrRate - l2ErrRate, "\n")
-   139                                                   #誤差が事前に指定した幅から更新されなくなったら収束として停止
-   140         3         16.0      5.3      0.0          if abs(preStepErrRate - l2ErrRate) < TRAIN_LIMIT_L2NORM_DIFF:
-   141         1          1.0      1.0      0.0              return
-   142                                                   
-   143         2          3.0      1.5      0.0          preStepErrRate = l2ErrRate
+   114                                           @profile
+   115                                           def trainModel(model:NeuralNet, dataSet:List[dataparser.CharData], TRAIN_LIMIT_L2NORM_DIFF:float):
+   116         1          3.0      3.0      0.0      P = len(dataSet)
+   117         1          1.0      1.0      0.0      epoch = 0
+   118         1          1.0      1.0      0.0      preStepErrRate = 0
+   119                                           
+   120                                               while True:
+   121         5         22.0      4.4      0.0          epoch += 1
+   122         5        608.0    121.6      0.0          print("Epoch数:",epoch)
+   123                                           
+   124                                                   #学習
+   125       205      56597.0    276.1      2.4          for p in tqdm(range(P)):
+   126       200    1916502.0   9582.5     81.9              model.train(dataSet[p])
+   127                                                   
+   128                                                   #学習結果と誤差の検証
+   129         5         10.0      2.0      0.0          l2ErrRate = 0
+   130       205        283.0      1.4      0.0          for p in range(P):
+   131       200        500.0      2.5      0.0              yk_hat = dataSet[p].ansLabel.ansVec
+   132       200     352727.0   1763.6     15.1              yk = model.forward(dataSet[p])
+   133       200        433.0      2.2      0.0              K = len(yk)
+   134       200       7817.0     39.1      0.3              l2ErrRate += (((np.linalg.norm(yk_hat - yk))**2)/K)/P
+   135                                           
+   136         5       1818.0    363.6      0.1          print("平均二乗誤差:", l2ErrRate)
+   137         5       1575.0    315.0      0.1          print("改善された誤差:", preStepErrRate - l2ErrRate, "\n")
+   138                                                   #誤差が事前に指定した幅から更新されなくなったら収束として停止
+   139         5         31.0      6.2      0.0          if abs(preStepErrRate - l2ErrRate) < TRAIN_LIMIT_L2NORM_DIFF:
+   140         1          1.0      1.0      0.0              return
+   141                                                   
+   142         4          4.0      1.0      0.0          preStepErrRate = l2ErrRate
