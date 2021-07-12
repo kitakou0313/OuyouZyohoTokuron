@@ -37,8 +37,8 @@ class NeuralNet(object):
         self.params = params
 
         #定数1を追加する用の次元を用意する
-        inputLayerWidthWith1 = self.params.INPUT_LAYER_WIDTH + 1
-        middleLayerWidth1With1 = self.params.MIDDLE_LAYER_WIDTH + 1
+        inputLayerWidthWith1 = self.params.INPUT_LAYER_WIDTH
+        middleLayerWidth1With1 = self.params.MIDDLE_LAYER_WIDTH
 
         #標準偏差（平均0、標準偏差1）で初期化
         self.Wji:np.ndarray = np.random.randn(self.params.MIDDLE_LAYER_WIDTH,inputLayerWidthWith1)
@@ -62,8 +62,8 @@ class NeuralNet(object):
         """
         yk = self.forward(charData)
         yj1 = self.yj1
-        yj = yj1[:len(yj1)-1]
-        yi = np.insert(charData.meshFeature, len(charData.meshFeature), 1)
+        yj = yj1
+        yi = charData.meshFeature
         yk_hat = charData.ansLabel.ansVec
 
         K = self.params.OUTPUT_LAYER_WIDTH
@@ -81,7 +81,7 @@ class NeuralNet(object):
             tmp = np.sum((yk_hat - yk)*yk*(1-yk)*self.Wkj[:,j])
             dWji[j] = self.params.ETA *yj1[j]*(1 - yj1[j])*yi * tmp
         """
-        tmp = np.sum((yk_hat - yk)*yk*(1-yk)*self.Wkj[:,:-1].T, axis=1)
+        tmp = np.sum((yk_hat - yk)*yk*(1-yk)*self.Wkj.T, axis=1)
         dWji:np.ndarray = self.params.ETA*tmp.reshape(-1, 1)*yj.reshape(-1,1)*((1 - yj).reshape(-1,1))*yi
 
 
@@ -99,12 +99,12 @@ class NeuralNet(object):
         inputVector = charData.meshFeature
 
         #中間層
-        inputVectorWith1 = np.insert(inputVector, len(inputVector), 1)
+        inputVectorWith1 = inputVector
         u = self.Wji @ inputVectorWith1
         yj = logistic(u)
 
         #出力層
-        self.yj1 = np.insert(yj, len(yj), 1)
+        self.yj1 = yj
         u = self.Wkj @ self.yj1
         yk = softmax(u)
 
