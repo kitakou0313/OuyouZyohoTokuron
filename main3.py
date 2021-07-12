@@ -46,8 +46,8 @@ if __name__ == "__main__":
     np.random.seed(seed=20210711)
     modelTrainedWriter0AndWriter1 = neuralNet.NeuralNet(nnParams)
 
-    TRAIN_LIMIT_L2NORM_DIFF = 0.0001
-    neuralNet.trainModel(modelTrainedWriter0AndWriter1, trainData, TRAIN_LIMIT_L2NORM_DIFF)
+    TRAIN_LIMIT_L2NORM = 0.0001
+    neuralNet.trainModel(modelTrainedWriter0AndWriter1, trainData, TRAIN_LIMIT_L2NORM)
 
     print("--------------------")
     print("10.9で学習したニューラルネットに筆記者0と筆記者1の学習用データを入力して識別を行なえ。")
