@@ -9,11 +9,10 @@ def logistic(x):
     return y
 
 def softmax(x):
-    x = x.T
     x_max = x.max(axis=0)
     x = x - x_max
     w = np.exp(x)
-    return (w / w.sum(axis=0)).T
+    return (w / w.sum(axis=0))
 
 class NNParams():
     """
