@@ -36,8 +36,6 @@ class NeuralNet(object):
     def __init__(self, params:NNParams) -> None:
         self.params = params
 
-        #定数1を追加する用の次元を用意する
-
         #標準分布（平均0、標準偏差1）で初期化
         self.Wji:np.ndarray = np.random.randn(self.params.MIDDLE_LAYER_WIDTH,self.params.INPUT_LAYER_WIDTH)
         self.Wkj:np.ndarray = np.random.randn(self.params.OUTPUT_LAYER_WIDTH,self.params.MIDDLE_LAYER_WIDTH)
